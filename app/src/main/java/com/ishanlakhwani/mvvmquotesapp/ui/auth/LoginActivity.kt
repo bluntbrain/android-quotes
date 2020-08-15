@@ -1,11 +1,12 @@
-package com.ishanlakhwani.mvvmquotesapp
+package com.ishanlakhwani.mvvmquotesapp.ui.auth
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.ishanlakhwani.mvvmquotesapp.R
 
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_login)
     }
 }
