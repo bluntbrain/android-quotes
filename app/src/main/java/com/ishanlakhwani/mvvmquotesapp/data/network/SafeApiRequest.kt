@@ -25,4 +25,6 @@ abstract class SafeApiRequest{
             throw ApiException(message.toString())
         }
     }
+
+    abstract fun getUser(): Any
 }
