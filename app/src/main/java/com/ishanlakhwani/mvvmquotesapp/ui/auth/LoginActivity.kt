@@ -14,6 +14,7 @@ import com.ishanlakhwani.mvvmquotesapp.R
 import com.ishanlakhwani.mvvmquotesapp.data.db.AppDatabase
 import com.ishanlakhwani.mvvmquotesapp.data.db.entities.User
 import com.ishanlakhwani.mvvmquotesapp.data.network.MyApi
+import com.ishanlakhwani.mvvmquotesapp.data.network.NetworkConnectionInterceptor
 import com.ishanlakhwani.mvvmquotesapp.data.repositories.UserRepository
 import com.ishanlakhwani.mvvmquotesapp.databinding.ActivityLoginBinding
 import com.ishanlakhwani.mvvmquotesapp.ui.home.HomeActivity
@@ -27,7 +28,8 @@ class LoginActivity : AppCompatActivity(), AuthListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val api = MyApi()
+        val networkConnectionInterceptor = NetworkConnectionInterceptor(this)
+        val api = MyApi(networkConnectionInterceptor)
         val db = AppDatabase(this)
         val repository = UserRepository(api, db)
         val factory = AuthViewModelFactory(repository)

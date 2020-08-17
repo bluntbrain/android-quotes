@@ -20,13 +20,16 @@ interface MyApi {
     ): Response<AuthResponse>
 
     companion object{
-        operator fun invoke(): MyApi{
-//            val okkHttpclient = OkHttpClient.Builder()
-//                .addInterceptor(networkConnectionInterceptor)
-//                .build()
+        operator fun invoke(
+            networkConnectionInterceptor: NetworkConnectionInterceptor
+
+        ): MyApi{
+            val okkHttpclient = OkHttpClient.Builder()
+                .addInterceptor(networkConnectionInterceptor)
+                .build()
 
             return Retrofit.Builder()
-//                .client(okkHttpclient)
+                .client(okkHttpclient)
                 .baseUrl("https://api.simplifiedcoding.in/course-apis/mvvm/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
