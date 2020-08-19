@@ -3,6 +3,7 @@ package com.ishanlakhwani.mvvmquotesapp
 import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.ishanlakhwani.mvvmapp.data.preferences.PreferenceProvider
 import com.ishanlakhwani.mvvmquotesapp.data.db.AppDatabase
 import com.ishanlakhwani.mvvmquotesapp.data.network.MyApi
 import com.ishanlakhwani.mvvmquotesapp.data.network.NetworkConnectionInterceptor
@@ -27,10 +28,11 @@ class MVVMApplication : Application(), KodeinAware{
         bind() from singleton { NetworkConnectionInterceptor(instance()) }
         bind() from singleton { MyApi(instance()) }
         bind() from singleton { AppDatabase(instance()) }
+        bind() from singleton { PreferenceProvider(instance()) }
+        bind() from singleton { QuotesRepository(instance(), instance(), instance()) }
         bind() from singleton { UserRepository(instance(), instance()) }
         bind() from provider { AuthViewModelFactory(instance()) }
         bind() from provider { ProfileViewModelFactory(instance()) }
-        bind() from provider { QuotesRepository(instance(), instance()) }
         bind() from provider { QuotesViewModelFactory(instance()) }
 
     }

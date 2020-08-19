@@ -22,7 +22,8 @@ private val MINIMUM_INTERVAL = 6
 @RequiresApi(Build.VERSION_CODES.O)
 class QuotesRepository(
     private val api: MyApi,
-    private val db: AppDatabase
+    private val db: AppDatabase,
+    private val prefs: PreferenceProvider
 ) : SafeApiRequest() {
 
     private val quotes = MutableLiveData<List<Quote>>()
@@ -42,16 +43,16 @@ class QuotesRepository(
 
     @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun fetchQuotes() {
-//        val lastSavedAt = prefs.getLastSavedAt()
+        val lastSavedAt = prefs.getLastSavedAt()
 
-//        if (lastSavedAt == null || isFetchNeeded(LocalDateTime.parse(lastSavedAt))) {
+        if (lastSavedAt == null || isFetchNeeded(LocalDateTime.parse(lastSavedAt))) {
             try {
                 val response = apiRequest { api.getQuotes() }
                 quotes.postValue(response.quotes)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-//        }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -63,7 +64,8 @@ class QuotesRepository(
     @RequiresApi(Build.VERSION_CODES.O)
     private fun saveQuotes(quotes: List<Quote>) {
         Coroutines.io {
-//            prefs.savelastSavedAt(LocalDateTime.now().toString())
+            //LocalDateTime requires minSDK 26
+            prefs.savelastSavedAt(LocalDateTime.now().toString())
             db.getQuoteDao().saveAllQuotes(quotes)
         }
     }
