@@ -2,6 +2,7 @@ package com.ishanlakhwani.mvvmquotesapp.data.network
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import com.ishanlakhwani.mvvmquotesapp.util.NoInternetException
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -19,11 +20,20 @@ class NetworkConnectionInterceptor(
     }
 
     private fun isInternetAvailable(): Boolean{
-        val connectivityManager = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        //as activeNetwrokInfo is deprecated
+        var result = false
+        val connectivityManager = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
 
-        connectivityManager.activeNetworkInfo.also {
-            return it != null && it.isConnected
+        connectivityManager?.let {
+            it.getNetworkCapabilities(connectivityManager.activeNetwork)?.apply {
+                result = when{
+                    hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                    hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                    else -> false
+                }
+            }
         }
+        return result
     }
 
 }
